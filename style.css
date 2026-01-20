@@ -1,29 +1,55 @@
-/* 整体Mizuki风格适配 - 极简纯白+轻微质感 */
+/* 整体Mizuki风格 - 支持自定义动态背景 */
 body {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   font-family: 微软雅黑, sans-serif;
-  background: #ffffff;
+  /* 👇 改动态背景只换这里的链接！！！ */
+  /* 格式：background: #ffffff url("你的动态背景链接") fixed; */
+  background: #ffffff url("https://cdn.pixabay.com/animation/2022/11/08/07/49/07-49-11-561_512.gif") fixed;
+  background-size: cover; /* 自适应屏幕 */
+  opacity: 1;
+  /* 动态背景淡入+缓慢呼吸，更贴合时光感 */
+  animation: bgBreath 20s ease-in-out infinite;
   line-height: 1.8;
 }
 
-/* 说说卡片（Mizuki风格卡片+轻微悬浮） */
+/* 动态背景呼吸效果（慢节奏，几乎看不见） */
+@keyframes bgBreath {
+  0% { background-opacity: 0.02; }
+  50% { background-opacity: 0.03; }
+  100% { background-opacity: 0.02; }
+}
+
+/* 说说卡片（极浅灰+轻微悬浮，遮挡背景不影响阅读） */
 blockquote {
-  background: #ffffff;
+  background: #fafafa; /* 卡片底色，隔绝动态背景，保证文字清晰 */
   padding: 15px 20px;
   margin: 12px 0;
   border-left: 3px solid #e5e5e5;
   border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-  transition: all 1.2s ease-in-out; /* 慢节奏悬浮 */
+  transition: all 1.2s ease-in-out;
+  /* 加一层轻微半透明，和动态背景呼应 */
+  opacity: 0.98;
 }
 blockquote:hover {
-  transform: translateY(-2px); /* 轻微上浮，不突兀 */
+  transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  opacity: 1; /* 悬浮时卡片完全不透明，更清晰 */
 }
 
-/* 图片适配（Mizuki风格圆角+轻微放大） */
+/* 日期小标签 */
+blockquote strong {
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-right: 8px;
+  color: #666;
+}
+
+/* 图片适配 */
 blockquote img {
   max-width: 100%;
   border-radius: 4px;
@@ -31,18 +57,40 @@ blockquote img {
   transition: transform 1.5s ease-in-out;
 }
 blockquote img:hover {
-  transform: scale(1.01); /* 几乎看不见的放大，显质感 */
+  transform: scale(1.01);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* 时间线分隔（虚线） */
+/* 时间线分隔 */
 blockquote + blockquote {
   border-top: 1px dashed #f0f0f0;
   padding-top: 20px;
+}
+
+/* 分隔标语 */
+.divider {
+  display: block;
+  text-align: center;
+  margin: 20px 0;
+  color: #666;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: openLetter 1.5s forwards;
+  padding: 8px 0;
+  border-top: 1px dashed #e5e5e5;
+  border-bottom: 1px dashed #e5e5e5;
+  /* 分隔标语也加轻微不透明，保证清晰 */
+  background: #fafafa;
+  opacity: 0.98;
+}
+@keyframes openLetter {
+  to { opacity: 1; transform: scaleX(1); }
 }
 
 /* 手机端适配（关掉动态，避免卡顿） */
 @media (max-width: 768px) {
   blockquote:hover { transform: none !important; }
   .divider { animation: none !important; opacity: 1; transform: none; }
+  body { animation: none !important; } /* 手机端关掉背景呼吸 */
 }
